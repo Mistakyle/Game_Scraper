@@ -1,19 +1,14 @@
 from bs4 import BeautifulSoup
+import requests
 
-html_doc = """
-<html><head><title>The Dormouse's story</title></head>
-<body>
-<p class="title"><b>The Dormouse's story</b></p>
+r = requests.get('https://www.gamestop.com/trade/quote/nintendo-3ds/games/monster-hunter-generations/129531')
+soup = BeautifulSoup(r.content, 'html.parser')
+#myDivs = soup.findAll("div", {"class": "bigPrice ats-trade-quote-tradevalue-price"})
+#final = myDivs.find("span", {"class": "priceAmount"})
 
-<p class="story">Once upon a time there were three little sisters; and their names were
-<a href="http://example.com/elsie" class="sister" id="link1">Elsie</a>,
-<a href="http://example.com/lacie" class="sister" id="link2">Lacie</a> and
-<a href="http://example.com/tillie" class="sister" id="link3">Tillie</a>;
-and they lived at the bottom of a well.</p>
+for price in soup.find_all('div', attrs={'class': 'bigPrice ats-trade-quote-tradevalue-price'}):
+    final = price.find('span', attrs={'class': 'priceAmount'})
+    print(final.text)
 
-<p class="story">...</p>
-"""
-
-soup = BeautifulSoup(html_doc, 'html.parser')
-
-print(soup.prettify())
+#print(final.text)
+print(soup.title)
